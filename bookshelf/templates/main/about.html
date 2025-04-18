@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}About BookShelf{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm mb-5">
+            <div class="card-body p-5">
+                <h1 class="display-5 fw-bold mb-4">About BookShelf</h1>
+                
+                <p class="lead mb-4">
+                    BookShelf is a social platform for book lovers to track reading, write reviews, rate books, and connect with others who share similar reading interests.
+                </p>
+                
+                <h2 class="h4 mt-5 mb-3">Our Mission</h2>
+                <p>
+                    Our mission is to help readers discover books they'll love, organize their reading life, and connect with a community of fellow book enthusiasts. We believe that reading is not just a solitary activity but a shared journey that can be enriched through discussion and community.
+                </p>
+                
+                <h2 class="h4 mt-5 mb-3">Features</h2>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="d-flex mb-4">
+                            <div class="me-3">
+                                <i class="fas fa-book-open text-primary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5">Track Your Reading</h3>
+                                <p>Keep track of what you're reading, what you've read, and what you want to read next with customizable bookshelves.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="me-3">
+                                <i class="fas fa-star text-primary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5">Rate & Review</h3>
+                                <p>Share your thoughts on books with ratings and reviews. Help others discover great reads!</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="d-flex mb-4">
+                            <div class="me-3">
+                                <i class="fas fa-users text-primary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5">Connect with Readers</h3>
+                                <p>Follow friends and like-minded readers to see what they're reading and their latest reviews.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex mb-4">
+                            <div class="me-3">
+                                <i class="fas fa-search text-primary fa-2x"></i>
+                            </div>
+                            <div>
+                                <h3 class="h5">Discover New Books</h3>
+                                <p>Find your next favorite book through personalized recommendations and curated lists.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 class="h4 mt-5 mb-3">Get Started</h2>
+                <p>
+                    Join our community of book lovers today! Create an account to start tracking your reading journey and connecting with other readers.
+                </p>
+                
+                <div class="text-center mt-5">
+                    {% if not current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg">Join BookShelf</a>
+                    {% else %}
+                    <a href="{{ url_for('books.index') }}" class="btn btn-primary btn-lg">Browse Books</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

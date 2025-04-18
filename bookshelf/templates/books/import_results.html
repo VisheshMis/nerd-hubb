@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Import Search Results - BookShelf{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Search Results: "{{ query }}"</h1>
+        <a href="{{ url_for('books.import_form') }}" class="btn btn-outline-secondary">
+            <i class="fas fa-arrow-left me-1"></i> Back to Search
+        </a>
+    </div>
+    
+    {% if books %}
+    <form action="{{ url_for('books.import_save') }}" method="post">
+        <div class="d-flex justify-content-between mb-3">
+            <p class="text-muted">{{ books|length }} books found</p>
+            <div>
+                <button type="button" class="btn btn-sm btn-outline-primary me-2" id="select-all">Select All</button>
+                <button type="submit" class="btn btn-sm btn-success">
+                    <i class="fas fa-download me-1"></i> Import Selected
+                </button>
+            </div>
+        </div>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for book in books %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-light d-flex">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="{{ book|tojson }}" 
+                                   name="book_data" id="book-{{ loop.index }}">
+                            <label class="form-check-label" for="book-{{ loop.index }}">
+                                Select for import
+                            </label>
+                        </div>
+                    </div>
+                    {% if book.cover_url %}
+                    <img src="{{ book.cover_url }}" class="card-img-top book-cover" alt="{{ book.title }}">
+                    {% else %}
+                    <div class="card-img-top bg-light text-center py-5">
+                        <i class="fas fa-book fa-3x text-secondary"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text text-muted">{{ book.author }}</p>
+                        
+                        {% if book.isbn %}
+                        <p class="card-text small mb-1">
+                            <span class="fw-bold">ISBN:</span> {{ book.isbn }}
+                        </p>
+                        {% endif %}
+                        
+                        {% if book.published_date %}
+                        <p class="card-text small mb-1">
+                            <span class="fw-bold">Published:</span> {{ book.published_date }}
+                        </p>
+                        {% endif %}
+                        
+                        {% if book.genres %}
+                        <p class="card-text small mb-0">
+                            <span class="fw-bold">Genres:</span><br>
+                            {% for genre in book.genres %}
+                            <span class="badge bg-secondary me-1 mb-1">{{ genre }}</span>
+                            {% endfor %}
+                        </p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-download me-1"></i> Import Selected Books
+            </button>
+        </div>
+    </form>
+    {% else %}
+    <div class="alert alert-info">
+        <p class="mb-3">No books found matching your search query.</p>
+        <a href="{{ url_for('books.import_form') }}" class="btn btn-primary">Try a Different Search</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const selectAllButton = document.getElementById('select-all');
+        if (selectAllButton) {
+            selectAllButton.addEventListener('click', function() {
+                const checkboxes = document.querySelectorAll('input[name="book_data"]');
+                const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+                
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = !allChecked;
+                });
+                
+                this.textContent = allChecked ? 'Select All' : 'Deselect All';
+            });
+        }
+    });
+</script>
+{% endblock %} 

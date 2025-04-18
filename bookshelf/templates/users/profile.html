@@ -1,0 +1,195 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }} - BookShelf{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- User Info -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                {% if user.profile_pic_url %}
+                <img src="{{ user.profile_pic_url }}" alt="{{ user.username }}" class="rounded-circle mb-3" style="width: 150px; height: 150px; object-fit: cover;">
+                {% else %}
+                <div class="bg-light rounded-circle mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 150px; height: 150px;">
+                    <i class="fas fa-user fa-4x text-secondary"></i>
+                </div>
+                {% endif %}
+                
+                <h3>{{ user.username }}</h3>
+                
+                {% if current_user.is_authenticated and current_user.id != user.id %}
+                <div class="mt-3">
+                    {% if is_following %}
+                    <form action="{{ url_for('users.unfollow', username=user.username) }}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger">
+                            <i class="fas fa-user-minus me-1"></i> Unfollow
+                        </button>
+                    </form>
+                    {% else %}
+                    <form action="{{ url_for('users.follow', username=user.username) }}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus me-1"></i> Follow
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
+                {% endif %}
+                
+                {% if current_user.is_authenticated and current_user.id == user.id %}
+                <div class="mt-3">
+                    <a href="{{ url_for('users.settings') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-cog me-1"></i> Edit Profile
+                    </a>
+                </div>
+                {% endif %}
+                
+                <hr>
+                
+                <div class="user-stats d-flex justify-content-around text-center mt-3">
+                    <div>
+                        <div class="h4 mb-0">{{ shelf_counts.read }}</div>
+                        <div class="small text-muted">Read</div>
+                    </div>
+                    <div>
+                        <div class="h4 mb-0">{{ shelf_counts.reading }}</div>
+                        <div class="small text-muted">Reading</div>
+                    </div>
+                    <div>
+                        <div class="h4 mb-0">{{ shelf_counts.want_to_read }}</div>
+                        <div class="small text-muted">Want to Read</div>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                {% if user.bio %}
+                <div class="text-start mt-3">
+                    <h5>About</h5>
+                    <p>{{ user.bio }}</p>
+                </div>
+                {% endif %}
+                
+                <div class="text-start mt-3">
+                    <h5>Member Since</h5>
+                    <p>{{ user.created_at.strftime('%B %Y') }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Content -->
+    <div class="col-md-8">
+        <!-- Bookshelves Preview -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Bookshelves</h5>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="shelfDropdown" data-bs-toggle="dropdown">
+                        View Shelf
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="shelfDropdown">
+                        <li><a class="dropdown-item" href="{{ url_for('users.shelves', username=user.username, status='want_to_read') }}">Want to Read ({{ shelf_counts.want_to_read }})</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('users.shelves', username=user.username, status='reading') }}">Currently Reading ({{ shelf_counts.reading }})</a></li>
+                        <li><a class="dropdown-item" href="{{ url_for('users.shelves', username=user.username, status='read') }}">Read ({{ shelf_counts.read }})</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row row-cols-1 row-cols-md-3 g-3">
+                    <!-- This would show a few books from each shelf, but we'll just show placeholder for now -->
+                    {% for i in range(3) %}
+                    <div class="col text-center">
+                        <div class="bg-light p-3 rounded">
+                            <i class="fas fa-book-open fa-3x text-secondary mb-2"></i>
+                            <p class="mb-0">View {{ user.username }}'s shelves to see their books</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Reviews -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Recent Reviews</h5>
+                <a href="{{ url_for('users.reviews', username=user.username) }}" class="btn btn-sm btn-light">View All</a>
+            </div>
+            <div class="card-body">
+                {% if recent_reviews %}
+                <div class="reviews-list">
+                    {% for review in recent_reviews %}
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="{{ review.book.cover_url or url_for('static', filename='images/default-book.png') }}" alt="{{ review.book.title }}" class="me-3" style="width: 60px; height: 90px; object-fit: cover;">
+                                <div>
+                                    <h5 class="mb-0">
+                                        <a href="{{ url_for('books.view', book_id=review.book.id) }}">{{ review.book.title }}</a>
+                                    </h5>
+                                    <p class="text-muted mb-0">by {{ review.book.author }}</p>
+                                    <div class="stars my-1">
+                                        {% for i in range(review.rating) %}
+                                        <i class="fas fa-star text-warning"></i>
+                                        {% endfor %}
+                                        {% for i in range(5 - review.rating) %}
+                                        <i class="far fa-star text-warning"></i>
+                                        {% endfor %}
+                                    </div>
+                                    <small class="text-muted">{{ review.created_at.strftime('%B %d, %Y') }}</small>
+                                </div>
+                            </div>
+                            
+                            {% if review.text %}
+                            <p class="card-text mt-2">{{ review.text|truncate(200) }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    {{ user.username }} hasn't written any reviews yet.
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Book Files -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Book Files</h5>
+                <a href="{{ url_for('users.files', username=user.username) }}" class="btn btn-sm btn-light">View All</a>
+            </div>
+            <div class="card-body">
+                {% if user.book_files.count() %}
+                <div class="row">
+                    <div class="col-md-8">
+                        <p>{{ user.username }} has uploaded {{ user.book_files.count() }} book files.</p>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        {% if user == current_user %}
+                        <a href="{{ url_for('users.upload_file') }}" class="btn btn-outline-primary">
+                            <i class="fas fa-upload me-1"></i> Upload File
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    {% if user == current_user %}
+                    <p>You haven't uploaded any book files yet.</p>
+                    <a href="{{ url_for('users.upload_file') }}" class="btn btn-primary">
+                        <i class="fas fa-upload me-1"></i> Upload Your First File
+                    </a>
+                    {% else %}
+                    <p>{{ user.username }} hasn't uploaded any book files yet.</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

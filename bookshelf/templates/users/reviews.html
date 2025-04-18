@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }}'s Reviews - BookShelf{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ user.username }}'s Reviews</h1>
+    <a href="{{ url_for('users.profile', username=user.username) }}" class="btn btn-outline-primary">
+        <i class="fas fa-arrow-left me-1"></i> Back to Profile
+    </a>
+</div>
+
+{% if reviews.items %}
+<div class="reviews-list">
+    {% for review in reviews.items %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <div class="text-center">
+                        {% if review.book.cover_url %}
+                        <img src="{{ review.book.cover_url }}" alt="{{ review.book.title }}" class="img-fluid mb-3" style="max-height: 200px;">
+                        {% else %}
+                        <div class="bg-light text-center py-5 mb-3">
+                            <i class="fas fa-book fa-4x text-secondary"></i>
+                        </div>
+                        {% endif %}
+                        <a href="{{ url_for('books.view', book_id=review.book.id) }}" class="btn btn-primary btn-sm">View Book</a>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <h4 class="card-title">
+                        <a href="{{ url_for('books.view', book_id=review.book.id) }}">{{ review.book.title }}</a>
+                    </h4>
+                    <h6 class="text-muted mb-3">by {{ review.book.author }}</h6>
+                    
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="stars me-2">
+                            {% for i in range(review.rating) %}
+                            <i class="fas fa-star text-warning"></i>
+                            {% endfor %}
+                            {% for i in range(5 - review.rating) %}
+                            <i class="far fa-star text-warning"></i>
+                            {% endfor %}
+                        </div>
+                        <span class="text-muted">Reviewed on {{ review.created_at.strftime('%B %d, %Y') }}</span>
+                    </div>
+                    
+                    <p class="card-text">{{ review.text }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<!-- Pagination -->
+{% if reviews.pages > 1 %}
+<nav class="mt-4">
+    <ul class="pagination justify-content-center">
+        {% if reviews.has_prev %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('users.reviews', username=user.username, page=reviews.prev_num) }}">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Previous</a>
+        </li>
+        {% endif %}
+        
+        {% for page_num in reviews.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+            {% if page_num %}
+                {% if reviews.page == page_num %}
+                <li class="page-item active">
+                    <a class="page-link" href="{{ url_for('users.reviews', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                </li>
+                {% else %}
+                <li class="page-item">
+                    <a class="page-link" href="{{ url_for('users.reviews', username=user.username, page=page_num) }}">{{ page_num }}</a>
+                </li>
+                {% endif %}
+            {% else %}
+            <li class="page-item disabled">
+                <a class="page-link" href="#">...</a>
+            </li>
+            {% endif %}
+        {% endfor %}
+        
+        {% if reviews.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{{ url_for('users.reviews', username=user.username, page=reviews.next_num) }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="alert alert-info">
+    <p>{{ user.username }} hasn't written any reviews yet.</p>
+</div>
+{% endif %}
+{% endblock %} 

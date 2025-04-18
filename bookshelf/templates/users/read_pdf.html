@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}Reading {{ book_file.original_filename }}{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    #pdf-container {
+        width: 100%;
+        height: 85vh;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">{{ book_file.original_filename }}</h1>
+        <div>
+            <a href="{{ url_for('users.download_file', file_id=book_file.id) }}" class="btn btn-outline-primary">
+                <i class="fas fa-download"></i> Download
+            </a>
+            <a href="{{ url_for('users.files', username=book_file.user.username) }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Files
+            </a>
+        </div>
+    </div>
+
+    {% if book_file.book %}
+    <div class="mb-4">
+        <p>From book: <a href="{{ url_for('books.detail', book_id=book_file.book.id) }}">{{ book_file.book.title }}</a></p>
+    </div>
+    {% endif %}
+
+    <div id="pdf-container">
+        <object data="{{ url_for('users.stream_file', file_id=book_file.id) }}" type="application/pdf" width="100%" height="100%">
+            <p>Your browser doesn't support embedded PDFs. 
+               <a href="{{ url_for('users.download_file', file_id=book_file.id) }}">Download the PDF</a> instead.
+            </p>
+        </object>
+    </div>
+</div>
+{% endblock %} 

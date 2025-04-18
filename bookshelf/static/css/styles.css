@@ -1,0 +1,331 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+/* Global styles */
+:root {
+    --primary: #6b4226;
+    --primary-hover: #5c3c25;
+    --secondary: #a18764;
+    --secondary-hover: #8c7354;
+    --bg-color: #f8f3e6;
+    --content-bg: #fffcf5;
+    --text-color: #3a2921;
+    --heading-color: #5c3c25;
+    --lighter-accent: #d9c9a3;
+    --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><rect width="100" height="100" fill="none"/><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(122, 89, 44, 0.05)" stroke-width="1"/></svg>');
+    color: var(--text-color);
+    font-family: 'Crimson Text', Georgia, serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    color: var(--heading-color);
+}
+
+a {
+    color: var(--primary);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+.container {
+    background-color: rgba(255, 250, 240, 0.9);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    padding: 20px 30px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary-hover);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+.btn-outline-primary {
+    color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-outline-primary:hover, .btn-outline-primary:focus {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary-hover);
+}
+
+.btn-secondary:hover, .btn-secondary:focus {
+    background-color: var(--secondary-hover);
+    border-color: var(--secondary-hover);
+}
+
+.btn-outline-secondary {
+    color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-outline-secondary:hover, .btn-outline-secondary:focus {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+/* Navbar styling */
+.navbar {
+    background-color: var(--primary) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-brand {
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+    color: #fff;
+}
+
+.dropdown-menu {
+    background-color: #fffcf5;
+    border: 1px solid var(--lighter-accent);
+}
+
+.dropdown-item:hover {
+    background-color: #f3ece0;
+}
+
+.dropdown-divider {
+    border-top-color: var(--lighter-accent);
+}
+
+/* Card styling */
+.card {
+    background-color: var(--content-bg);
+    border: 1px solid var(--lighter-accent);
+    border-radius: 8px;
+    box-shadow: var(--box-shadow);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: #efe8d9;
+    border-bottom: 1px solid var(--lighter-accent);
+}
+
+.card-header.bg-primary {
+    background-color: var(--primary) !important;
+}
+
+/* Table styling */
+.table {
+    background-color: var(--content-bg);
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f3ece0;
+}
+
+.table-light, .table-light>th, .table-light>td {
+    background-color: #efe8d9;
+}
+
+/* Form controls */
+.form-control {
+    border-color: var(--lighter-accent);
+}
+
+.form-control:focus {
+    border-color: var(--secondary);
+    box-shadow: 0 0 0 0.25rem rgba(161, 135, 100, 0.25);
+}
+
+/* Alerts */
+.alert {
+    border: 1px solid var(--lighter-accent);
+}
+
+.alert-info {
+    background-color: #e8edf3;
+    color: #36546d;
+}
+
+.alert-success {
+    background-color: #e8f3e9;
+    color: #316b39;
+}
+
+.alert-warning {
+    background-color: #f5efd9;
+    color: #856404;
+}
+
+.alert-danger {
+    background-color: #f3e8e8;
+    color: #721c24;
+}
+
+/* Pagination */
+.pagination .page-link {
+    color: var(--primary);
+    background-color: var(--content-bg);
+    border-color: var(--lighter-accent);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d;
+    background-color: #f3ece0;
+}
+
+/* Book covers */
+.book-card .card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+/* Footer styling */
+footer {
+    background-color: #efe8d9 !important;
+    border-top: 1px solid var(--lighter-accent);
+    color: var(--text-color);
+}
+
+footer a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--primary-hover);
+    text-decoration: underline;
+}
+
+footer .social-links a {
+    font-size: 1.2rem;
+    color: var(--primary);
+}
+
+/* Star ratings */
+.stars .fa-star, .stars .fa-star-half-alt {
+    color: #e6b012 !important;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #efe8d9;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--lighter-accent);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c1b08d;
+}
+
+/* Book file icons */
+.fa-file-pdf {
+    color: #e74c3c !important;
+}
+
+.fa-book {
+    color: var(--primary) !important;
+}
+
+/* Home page styling */
+.welcome-banner {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('/static/images/library-bg.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 60px 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+    
+    .book-card .card-img-top {
+        height: 200px;
+    }
+}
+
+/* Special Pages */
+.auth-page .card {
+    max-width: 500px;
+    margin: 0 auto;
+    border: 1px solid var(--lighter-accent);
+    border-radius: 8px;
+}
+
+.auth-page .card-header {
+    background-color: var(--primary);
+    color: white;
+}
+
+/* Profile page */
+.profile-card .rounded-circle {
+    border: 4px solid var(--lighter-accent);
+}
+
+/* Book detail page */
+.book-details small {
+    color: #68584a !important;
+}
+
+/* Badge styling */
+.badge.bg-secondary {
+    background-color: var(--secondary) !important;
+}
+
+/* Custom class for medieval dividers */
+.medieval-divider {
+    height: 20px;
+    background-image: url('data:image/svg+xml;utf8,<svg width="100" height="20" viewBox="0 0 100 20" xmlns="http://www.w3.org/2000/svg"><path d="M0,10 L40,10 M60,10 L100,10 M50,0 L50,20" stroke="rgba(122, 89, 44, 0.3)" stroke-width="1"/><circle cx="50" cy="10" r="3" fill="rgba(122, 89, 44, 0.3)"/></svg>');
+    background-repeat: repeat-x;
+    margin: 20px 0;
+} 

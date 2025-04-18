@@ -1,0 +1,135 @@
+{% extends 'base.html' %}
+
+{% block title %}BookShelf - Track Your Reading{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="py-5 mb-5 text-center bg-light rounded">
+    <div class="container">
+        <h1 class="display-4 fw-bold">Track Your Reading Journey</h1>
+        <p class="lead mb-4">Discover new books, share your thoughts, and connect with other readers.</p>
+        {% if not current_user.is_authenticated %}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg px-4 gap-3">Join Now</a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary btn-lg px-4">Login</a>
+        </div>
+        {% else %}
+        <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+            <a href="{{ url_for('books.index') }}" class="btn btn-primary btn-lg px-4 gap-3">Browse Books</a>
+            <a href="{{ url_for('shelves.index') }}" class="btn btn-outline-secondary btn-lg px-4">My Shelves</a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    <!-- Trending Books Section -->
+    <div class="col-lg-8">
+        <h2 class="mb-4">Trending Books</h2>
+        
+        {% if trending_books %}
+        <div class="row row-cols-1 row-cols-md-3 g-4 mb-4">
+            {% for book in trending_books %}
+            <div class="col">
+                <div class="card h-100 shadow-sm">
+                    {% if book.cover_url %}
+                    <img src="{{ book.cover_url }}" class="card-img-top" alt="{{ book.title }}">
+                    {% else %}
+                    <div class="card-img-top bg-light text-center py-5">
+                        <i class="fas fa-book fa-3x text-secondary"></i>
+                    </div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text text-muted">{{ book.author }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="stars">
+                                {% set rating = book.average_rating() %}
+                                {% for i in range(5) %}
+                                    {% if i < rating|int %}
+                                    <i class="fas fa-star text-warning"></i>
+                                    {% elif i < rating and rating|int < rating %}
+                                    <i class="fas fa-star-half-alt text-warning"></i>
+                                    {% else %}
+                                    <i class="far fa-star text-warning"></i>
+                                    {% endif %}
+                                {% endfor %}
+                                <span class="ms-1 text-muted small">{{ rating }}</span>
+                            </div>
+                            <a href="{{ url_for('books.view', book_id=book.id) }}" class="btn btn-sm btn-outline-primary">View</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <a href="{{ url_for('books.index') }}" class="btn btn-outline-primary">View All Books</a>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No trending books available right now. Check back soon!
+        </div>
+        {% endif %}
+    </div>
+    
+    <!-- Activity Feed Section -->
+    <div class="col-lg-4">
+        <h2 class="mb-4">Recent Activity</h2>
+        
+        {% if current_user.is_authenticated and activity_feed %}
+        <div class="list-group mb-4">
+            {% for review in activity_feed %}
+            <div class="list-group-item">
+                <div class="d-flex w-100 justify-content-between">
+                    <h6 class="mb-1">
+                        <a href="{{ url_for('users.profile', username=review.user.username) }}">{{ review.user.username }}</a>
+                        rated
+                        <a href="{{ url_for('books.view', book_id=review.book.id) }}">{{ review.book.title }}</a>
+                    </h6>
+                    <small class="text-muted">{{ review.created_at.strftime('%b %d') }}</small>
+                </div>
+                <div class="stars mb-1">
+                    {% for i in range(review.rating) %}
+                    <i class="fas fa-star text-warning"></i>
+                    {% endfor %}
+                    {% for i in range(5 - review.rating) %}
+                    <i class="far fa-star text-warning"></i>
+                    {% endfor %}
+                </div>
+                {% if review.text %}
+                <p class="mb-1">{{ review.text|truncate(100) }}</p>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+        {% elif current_user.is_authenticated %}
+        <div class="alert alert-info mb-4">
+            <p>Your activity feed is empty. Start by following other users or adding books to your shelves!</p>
+            <a href="{{ url_for('books.index') }}" class="btn btn-sm btn-primary mt-2">Browse Books</a>
+        </div>
+        {% else %}
+        <div class="alert alert-info mb-4">
+            <p>Sign in to see activity from other readers!</p>
+            <div class="d-flex gap-2 mt-2">
+                <a href="{{ url_for('auth.login') }}" class="btn btn-sm btn-primary">Login</a>
+                <a href="{{ url_for('auth.register') }}" class="btn btn-sm btn-outline-primary">Register</a>
+            </div>
+        </div>
+        {% endif %}
+        
+        <!-- Features -->
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Why Join BookShelf?</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Track books you want to read</li>
+                <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Rate and review your favorites</li>
+                <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Connect with other readers</li>
+                <li class="list-group-item"><i class="fas fa-check-circle text-success me-2"></i> Discover new books you'll love</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 

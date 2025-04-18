@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block title %}Import Books - BookShelf{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Import Books from Open Library</h1>
+    
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h2 class="h5 mb-3">Search for Books to Import</h2>
+                    
+                    <form action="{{ url_for('books.import_search') }}" method="get">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="query" 
+                                placeholder="Search by title, author, or ISBN..." required>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search me-1"></i> Search
+                            </button>
+                        </div>
+                        <div class="text-muted small">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Examples: "Harry Potter", "Stephen King", "Pride and Prejudice"
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <div class="card mt-4 shadow-sm">
+                <div class="card-body">
+                    <h3 class="h5 mb-3">About Open Library</h3>
+                    <p>
+                        <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a> 
+                        is an open, editable library catalog, building towards a web page for every book 
+                        ever published.
+                    </p>
+                    <p class="mb-0">
+                        By importing books from Open Library, you can quickly populate the BookShelf 
+                        database with accurate book information including covers, descriptions, and more.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

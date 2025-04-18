@@ -1,0 +1,329 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} - BookShelf{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Book Details -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            {% if book.cover_url %}
+            <img src="{{ book.cover_url }}" class="card-img-top" alt="{{ book.title }}">
+            {% else %}
+            <div class="bg-light text-center py-5">
+                <i class="fas fa-book fa-5x text-secondary"></i>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <!-- Book Actions for logged-in users -->
+                {% if current_user.is_authenticated %}
+                <div class="d-grid gap-2 mb-3">
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle w-100" type="button" id="shelfDropdown" data-bs-toggle="dropdown">
+                            Add to Shelf
+                        </button>
+                        <ul class="dropdown-menu w-100" aria-labelledby="shelfDropdown">
+                            <li>
+                                <form action="{{ url_for('shelves.add_to_shelf', book_id=book.id, status='want_to_read') }}" method="post">
+                                    <button type="submit" class="dropdown-item">Want to Read</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ url_for('shelves.add_to_shelf', book_id=book.id, status='reading') }}" method="post">
+                                    <button type="submit" class="dropdown-item">Currently Reading</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{{ url_for('shelves.add_to_shelf', book_id=book.id, status='read') }}" method="post">
+                                    <button type="submit" class="dropdown-item">Read</button>
+                                </form>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <form action="{{ url_for('shelves.remove_from_shelf', book_id=book.id) }}" method="post">
+                                    <button type="submit" class="dropdown-item text-danger">Remove from Shelves</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+                
+                <!-- Book Info -->
+                <h5 class="card-title fs-4">{{ book.title }}</h5>
+                <p class="card-text mb-1">by <strong>{{ book.author }}</strong></p>
+                
+                <div class="d-flex align-items-center mt-2 mb-3">
+                    <div class="stars">
+                        {% set rating = book.average_rating() %}
+                        {% for i in range(5) %}
+                            {% if i < rating|int %}
+                            <i class="fas fa-star text-warning"></i>
+                            {% elif i < rating and rating|int < rating %}
+                            <i class="fas fa-star-half-alt text-warning"></i>
+                            {% else %}
+                            <i class="far fa-star text-warning"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <span class="ms-2">{{ rating }} ({{ book.reviews.count() }} reviews)</span>
+                </div>
+                
+                <hr>
+                
+                <div class="book-details">
+                    {% if book.published_date %}
+                    <p class="card-text"><small class="text-muted"><strong>Published:</strong> {{ book.published_date.strftime('%B %d, %Y') }}</small></p>
+                    {% endif %}
+                    
+                    {% if book.publisher %}
+                    <p class="card-text"><small class="text-muted"><strong>Publisher:</strong> {{ book.publisher }}</small></p>
+                    {% endif %}
+                    
+                    {% if book.page_count %}
+                    <p class="card-text"><small class="text-muted"><strong>Pages:</strong> {{ book.page_count }}</small></p>
+                    {% endif %}
+                    
+                    {% if book.isbn %}
+                    <p class="card-text"><small class="text-muted"><strong>ISBN:</strong> {{ book.isbn }}</small></p>
+                    {% endif %}
+                    
+                    {% if book.language %}
+                    <p class="card-text"><small class="text-muted"><strong>Language:</strong> {{ book.language }}</small></p>
+                    {% endif %}
+                </div>
+                
+                {% if book.genres %}
+                <hr>
+                <div class="book-genres">
+                    <strong>Genres:</strong>
+                    <div class="mt-2">
+                        {% for genre in book.genres %}
+                        <a href="{{ url_for('books.index', genre_id=genre.id) }}" class="badge bg-secondary text-decoration-none me-1 mb-1">{{ genre.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <!-- Book Description and Reviews -->
+    <div class="col-md-8">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Description</h5>
+            </div>
+            <div class="card-body">
+                {% if book.description %}
+                <p>{{ book.description }}</p>
+                {% else %}
+                <p class="text-muted">No description available for this book.</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Book Files Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Book Files</h5>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('users.upload_file') }}" class="btn btn-sm btn-light">
+                    <i class="fas fa-upload me-1"></i> Upload
+                </a>
+                {% endif %}
+            </div>
+            <div class="card-body">
+                {% if book.book_files.count() > 0 %}
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>File</th>
+                                <th>Uploaded By</th>
+                                <th>Size</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for file in book.book_files %}
+                            <tr>
+                                <td>
+                                    <a href="{{ url_for('users.download_file', file_id=file.id) }}" class="text-decoration-none">
+                                        {% if file.file_type == 'application/pdf' %}
+                                        <i class="fas fa-file-pdf text-danger me-2"></i>
+                                        {% elif 'epub' in file.file_type %}
+                                        <i class="fas fa-book text-primary me-2"></i>
+                                        {% elif 'text' in file.file_type %}
+                                        <i class="fas fa-file-alt text-secondary me-2"></i>
+                                        {% elif 'word' in file.file_type or 'doc' in file.file_type %}
+                                        <i class="fas fa-file-word text-primary me-2"></i>
+                                        {% else %}
+                                        <i class="fas fa-file text-secondary me-2"></i>
+                                        {% endif %}
+                                        {{ file.original_filename }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{{ url_for('users.profile', username=file.user.username) }}">
+                                        {{ file.user.username }}
+                                    </a>
+                                </td>
+                                <td>{{ file.formatted_size }}</td>
+                                <td>{{ file.created_at.strftime('%b %d, %Y') }}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <a href="{{ url_for('users.read_file', file_id=file.id) }}" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-book-reader"></i> Read
+                                        </a>
+                                        <a href="{{ url_for('users.download_file', file_id=file.id) }}" class="btn btn-sm btn-outline-secondary">
+                                            <i class="fas fa-download"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    <p class="mb-0">
+                        No files have been uploaded for this book yet. 
+                        {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('users.upload_file') }}" class="alert-link">Upload a file</a>
+                        {% endif %}
+                    </p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Reviews Section -->
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Reviews</h5>
+            </div>
+            <div class="card-body">
+                <!-- Add Review Form for authenticated users -->
+                {% if current_user.is_authenticated and not user_review %}
+                <form action="{{ url_for('books.add_review', book_id=book.id) }}" method="post" class="mb-4">
+                    {{ review_form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ review_form.rating.label(class="form-label") }}
+                        {{ review_form.rating(class="form-select") }}
+                        {% for error in review_form.rating.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ review_form.text.label(class="form-label") }}
+                        {{ review_form.text(class="form-control", rows=4) }}
+                        {% for error in review_form.text.errors %}
+                            <div class="text-danger">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div>
+                        {{ review_form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+                
+                {% elif current_user.is_authenticated and user_review %}
+                <div class="alert alert-info mb-4">
+                    <p>You've already reviewed this book. <a href="#your-review">See your review</a></p>
+                </div>
+                {% endif %}
+                
+                <!-- List of Reviews -->
+                {% if reviews.items %}
+                <div class="reviews-list">
+                    {% for review in reviews.items %}
+                    <div class="card mb-3 {% if current_user.is_authenticated and review.user_id == current_user.id %}bg-light{% endif %}" 
+                         {% if current_user.is_authenticated and review.user_id == current_user.id %}id="your-review"{% endif %}>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <div>
+                                    <a href="{{ url_for('users.profile', username=review.user.username) }}" class="text-decoration-none">
+                                        <strong>{{ review.user.username }}</strong>
+                                    </a>
+                                    {% if current_user.is_authenticated and review.user_id == current_user.id %}
+                                    <span class="badge bg-primary ms-2">Your Review</span>
+                                    {% endif %}
+                                </div>
+                                <small class="text-muted">{{ review.created_at.strftime('%B %d, %Y') }}</small>
+                            </div>
+                            
+                            <div class="stars mb-2">
+                                {% for i in range(review.rating) %}
+                                <i class="fas fa-star text-warning"></i>
+                                {% endfor %}
+                                {% for i in range(5 - review.rating) %}
+                                <i class="far fa-star text-warning"></i>
+                                {% endfor %}
+                            </div>
+                            
+                            <p class="card-text">{{ review.text }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <!-- Pagination for Reviews -->
+                {% if reviews.pages > 1 %}
+                <nav class="mt-4">
+                    <ul class="pagination justify-content-center">
+                        {% if reviews.has_prev %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('books.view', book_id=book.id, page=reviews.prev_num) }}">Previous</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Previous</a>
+                        </li>
+                        {% endif %}
+                        
+                        {% for page_num in reviews.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+                            {% if page_num %}
+                                {% if reviews.page == page_num %}
+                                <li class="page-item active">
+                                    <a class="page-link" href="{{ url_for('books.view', book_id=book.id, page=page_num) }}">{{ page_num }}</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ url_for('books.view', book_id=book.id, page=page_num) }}">{{ page_num }}</a>
+                                </li>
+                                {% endif %}
+                            {% else %}
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#">...</a>
+                            </li>
+                            {% endif %}
+                        {% endfor %}
+                        
+                        {% if reviews.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ url_for('books.view', book_id=book.id, page=reviews.next_num) }}">Next</a>
+                        </li>
+                        {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+                
+                {% else %}
+                <div class="alert alert-info">
+                    <p>No reviews yet. Be the first to review this book!</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
