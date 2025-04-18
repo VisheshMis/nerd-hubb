@@ -14,7 +14,7 @@
     
     {% block styles %}{% endblock %}
 </head>
-<body>
+<body class="{% block body_class %}fantasy-theme{% endblock %}">
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
         <div class="container">
@@ -27,27 +27,27 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+                        <a class="nav-link {% if request.endpoint == 'main.index' %}active{% endif %}" href="{{ url_for('main.index') }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('books.index') }}">Browse Books</a>
+                        <a class="nav-link {% if request.endpoint == 'books.index' %}active{% endif %}" href="{{ url_for('books.index') }}">Browse Books</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.discover') }}">Discover</a>
+                        <a class="nav-link {% if request.endpoint == 'main.discover' %}active{% endif %}" href="{{ url_for('main.discover') }}">Discover</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('books.import_form') }}">
+                        <a class="nav-link {% if request.endpoint == 'books.import_form' %}active{% endif %}" href="{{ url_for('books.import_form') }}">
                             <i class="fas fa-cloud-download-alt me-1"></i>Import Books
                         </a>
                     </li>
                     {% if current_user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('users.upload_file') }}">
+                        <a class="nav-link {% if request.endpoint == 'users.upload_file' %}active{% endif %}" href="{{ url_for('users.upload_file') }}">
                             <i class="fas fa-upload me-1"></i>Upload Book
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('shelves.index') }}">My Shelves</a>
+                        <a class="nav-link {% if request.endpoint == 'shelves.index' %}active{% endif %}" href="{{ url_for('shelves.index') }}">My Shelves</a>
                     </li>
                     {% endif %}
                 </ul>
@@ -63,22 +63,39 @@
                     {% if current_user.is_authenticated %}
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            {% if current_user.profile_pic_url %}
+                            <img src="{{ current_user.profile_pic_url }}" alt="{{ current_user.username }}" class="rounded-circle me-1" style="width: 24px; height: 24px; object-fit: cover;">
+                            {% else %}
+                            <i class="fas fa-user-circle me-1"></i>
+                            {% endif %}
                             {{ current_user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{{ url_for('users.profile', username=current_user.username) }}">My Profile</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('users.files', username=current_user.username) }}">My Book Files</a></li>
-                            <li><a class="dropdown-item" href="{{ url_for('users.settings') }}">Settings</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('users.profile', username=current_user.username) }}">
+                                <i class="fas fa-user me-2 text-primary"></i>My Profile</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url_for('users.files', username=current_user.username) }}">
+                                <i class="fas fa-file-alt me-2 text-primary"></i>My Book Files</a>
+                            </li>
+                            <li><a class="dropdown-item" href="{{ url_for('users.settings') }}">
+                                <i class="fas fa-cog me-2 text-primary"></i>Settings</a>
+                            </li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">
+                                <i class="fas fa-sign-out-alt me-2 text-primary"></i>Logout</a>
+                            </li>
                         </ul>
                     </li>
                     {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+                        <a class="nav-link {% if request.endpoint == 'auth.login' %}active{% endif %}" href="{{ url_for('auth.login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>Login
+                        </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+                        <a class="nav-link {% if request.endpoint == 'auth.register' %}active{% endif %}" href="{{ url_for('auth.register') }}">
+                            <i class="fas fa-user-plus me-1"></i>Register
+                        </a>
                     </li>
                     {% endif %}
                 </ul>
@@ -101,24 +118,24 @@
     </div>
     
     <!-- Main Content -->
-    <main class="container py-4">
+    <main class="container py-4 fantasy-corner">
         {% block content %}{% endblock %}
     </main>
     
     <!-- Footer -->
-    <footer class="bg-light py-4 mt-5">
+    <footer class="py-4 mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5 class="mb-3">BookShelf</h5>
+                    <h5 class="mb-3 fantasy-title">BookShelf</h5>
                     <p class="text-muted">Track your reading, discover new books, and connect with other readers.</p>
                 </div>
                 <div class="col-md-3">
                     <h5 class="mb-3">Links</h5>
                     <ul class="list-unstyled">
-                        <li><a href="{{ url_for('main.index') }}">Home</a></li>
-                        <li><a href="{{ url_for('books.index') }}">Browse Books</a></li>
-                        <li><a href="{{ url_for('main.about') }}">About</a></li>
+                        <li><a href="{{ url_for('main.index') }}"><i class="fas fa-home me-2"></i>Home</a></li>
+                        <li><a href="{{ url_for('books.index') }}"><i class="fas fa-book me-2"></i>Browse Books</a></li>
+                        <li><a href="{{ url_for('main.about') }}"><i class="fas fa-info-circle me-2"></i>About</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3">
@@ -130,7 +147,7 @@
                     </div>
                 </div>
             </div>
-            <hr>
+            <div class="medieval-divider my-4"></div>
             <p class="text-center text-muted mb-0">&copy; 2023 BookShelf. All rights reserved.</p>
         </div>
     </footer>
@@ -141,5 +158,48 @@
     <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
     
     {% block scripts %}{% endblock %}
+    
+    <script>
+        // Function to set genre-specific themes based on the URL
+        document.addEventListener('DOMContentLoaded', function() {
+            const path = window.location.pathname;
+            const searchParams = new URLSearchParams(window.location.search);
+            const genreParam = searchParams.get('genre_id');
+            
+            // Set body class based on route or genre parameter
+            if (path.includes('/books') && genreParam) {
+                // Map some common genre IDs to themes (these would need to be adjusted for your actual genre IDs)
+                const genreMap = {
+                    '1': 'fantasy-theme',
+                    '2': 'sci-fi-theme',
+                    '3': 'mystery-theme',
+                    '4': 'romance-theme'
+                };
+                
+                if (genreMap[genreParam]) {
+                    document.body.className = genreMap[genreParam];
+                }
+            } else if (path.includes('/users/files')) {
+                document.body.className = 'fantasy-theme';
+            }
+            
+            // Add genre-specific classes to book cards if they have genre tags
+            document.querySelectorAll('.book-card').forEach(card => {
+                const genreBadges = card.querySelectorAll('.badge');
+                genreBadges.forEach(badge => {
+                    const text = badge.textContent.toLowerCase().trim();
+                    if (text.includes('fantasy')) {
+                        card.classList.add('genre-fantasy');
+                    } else if (text.includes('sci-fi') || text.includes('science fiction')) {
+                        card.classList.add('genre-sci-fi');
+                    } else if (text.includes('mystery') || text.includes('thriller')) {
+                        card.classList.add('genre-mystery');
+                    } else if (text.includes('romance')) {
+                        card.classList.add('genre-romance');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html> 

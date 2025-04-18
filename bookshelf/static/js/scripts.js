@@ -103,6 +103,70 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
+
+    // Genre theme switcher in the UI (if present)
+    const themeSwitchers = document.querySelectorAll('.theme-switcher');
+    if (themeSwitchers.length > 0) {
+        themeSwitchers.forEach(switcher => {
+            switcher.addEventListener('click', function(e) {
+                e.preventDefault();
+                const theme = this.dataset.theme;
+                if (theme) {
+                    document.body.className = theme + '-theme';
+                    localStorage.setItem('preferred-theme', theme);
+                }
+            });
+        });
+    }
+    
+    // Apply stored theme preference
+    const storedTheme = localStorage.getItem('preferred-theme');
+    if (storedTheme && !document.body.className.includes('theme')) {
+        document.body.className = storedTheme + '-theme';
+    }
+    
+    // Add book cover effects
+    const bookCovers = document.querySelectorAll('.book-cover');
+    bookCovers.forEach(cover => {
+        cover.addEventListener('mouseover', function() {
+            this.classList.add('book-hover');
+        });
+        cover.addEventListener('mouseout', function() {
+            this.classList.remove('book-hover');
+        });
+    });
+    
+    // Add fancy scroll effect for navigation links
+    const navLinks = document.querySelectorAll('a[href^="#"]');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            if (this.getAttribute('href').length > 1) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 70,
+                        behavior: 'smooth'
+                    });
+                }
+            }
+        });
+    });
+    
+    // Handle book search form animations
+    const searchForm = document.querySelector('.search-form');
+    if (searchForm) {
+        const searchInput = searchForm.querySelector('input[type="search"]');
+        searchInput.addEventListener('focus', function() {
+            searchForm.classList.add('search-focus');
+        });
+        searchInput.addEventListener('blur', function() {
+            if (this.value === '') {
+                searchForm.classList.remove('search-focus');
+            }
+        });
+    }
 });
 
 // Helper function for debouncing
