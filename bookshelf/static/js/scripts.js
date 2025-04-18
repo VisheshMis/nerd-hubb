@@ -167,6 +167,40 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Handle dropdowns to ensure they're fully visible
+    const dropdownToggles = document.querySelectorAll('.dropdown-toggle');
+    
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', function() {
+            // Small delay to allow the dropdown to render
+            setTimeout(() => {
+                const dropdown = this.nextElementSibling;
+                if (dropdown && dropdown.classList.contains('dropdown-menu')) {
+                    // Get viewport dimensions
+                    const viewportHeight = window.innerHeight;
+                    const dropdownRect = dropdown.getBoundingClientRect();
+                    
+                    // Check if dropdown extends beyond viewport bottom
+                    if (dropdownRect.bottom > viewportHeight) {
+                        // Adjust position to show above if needed
+                        const spaceAbove = dropdownRect.top;
+                        const spaceBelow = viewportHeight - dropdownRect.top;
+                        
+                        if (spaceAbove > spaceBelow && dropdown.offsetHeight < spaceAbove) {
+                            dropdown.style.top = 'auto';
+                            dropdown.style.bottom = '100%';
+                            dropdown.style.transform = 'translateY(-0.5rem)';
+                        } else {
+                            // If we can't fit it above, limit its height
+                            const maxHeight = viewportHeight - dropdownRect.top - 20;
+                            dropdown.style.maxHeight = `${maxHeight}px`;
+                        }
+                    }
+                }
+            }, 10);
+        });
+    });
 });
 
 // Helper function for debouncing

@@ -8,11 +8,11 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link href="{{ url_for('static', filename='css/styles.css') }}?v={{ range(1000, 9999) | random }}" rel="stylesheet">
     
-    {% block styles %}{% endblock %}
+    {% block head %}{% endblock %}
 </head>
 <body class="{% block body_class %}fantasy-theme{% endblock %}">
     <!-- Navigation -->
@@ -154,12 +154,19 @@
     
     <!-- Bootstrap JS Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
-    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+    <!-- Custom JS with cache-busting -->
+    <script src="{{ url_for('static', filename='js/scripts.js') }}?v={{ range(1000, 9999) | random }}"></script>
     
     {% block scripts %}{% endblock %}
     
     <script>
+        // Force reload CSS to apply new styles immediately
+        const cssLink = document.querySelector('link[href*="styles.css"]');
+        if (cssLink) {
+            const newHref = cssLink.href.split('?')[0] + '?v=' + Math.floor(Math.random() * 9000 + 1000);
+            cssLink.href = newHref;
+        }
+        
         // Function to set genre-specific themes based on the URL
         document.addEventListener('DOMContentLoaded', function() {
             const path = window.location.pathname;

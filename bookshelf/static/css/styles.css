@@ -14,11 +14,64 @@
     --lighter-accent: #d9c9a3;
     --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     
+    /* Dark fantasy theme variables */
+    --dark-primary: #2c1e17;
+    --dark-primary-hover: #3c2820;
+    --dark-secondary: #614b37;
+    --dark-secondary-hover: #7a5f45;
+    --dark-bg-color: #1a1210;
+    --dark-content-bg: #241b15;
+    --dark-text-color: #e0d3c7;
+    --dark-heading-color: #f0e6db;
+    --dark-lighter-accent: #614b37;
+    --dark-box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    
     /* Background patterns */
     --fantasy-pattern: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M54 22c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6zm-18 6c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z" fill="rgba(122, 89, 44, 0.08)" fill-rule="evenodd"/><path d="M27 12c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6z" fill="rgba(122, 89, 44, 0.08)" fill-rule="evenodd"/><path d="M6 34c0-3.314 2.686-6 6-6s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="rgba(122, 89, 44, 0.08)" fill-rule="evenodd"/><path d="M30 42c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z" fill="rgba(122, 89, 44, 0.08)" fill-rule="evenodd"/><path d="M43 42c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z" fill="rgba(122, 89, 44, 0.08)" fill-rule="evenodd"/></svg>');
+    --dark-fantasy-pattern: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M54 22c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6 6 2.686 6 6zm-18 6c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z" fill="rgba(122, 89, 44, 0.15)" fill-rule="evenodd"/><path d="M27 12c-3.314 0-6 2.686-6 6s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6z" fill="rgba(122, 89, 44, 0.15)" fill-rule="evenodd"/><path d="M6 34c0-3.314 2.686-6 6-6s6 2.686 6 6-2.686 6-6 6-6-2.686-6-6z" fill="rgba(122, 89, 44, 0.15)" fill-rule="evenodd"/><path d="M30 42c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z" fill="rgba(122, 89, 44, 0.15)" fill-rule="evenodd"/><path d="M43 42c3.314 0 6-2.686 6-6s-2.686-6-6-6-6 2.686-6 6 2.686 6 6 6z" fill="rgba(122, 89, 44, 0.15)" fill-rule="evenodd"/></svg>');
     --sci-fi-pattern: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h60v60H0V0zm30 30v30h30V30H30zm0 0H0v30h30V30zm30 0V0H30v30h30zM30 0H0v30h30V0z" stroke="rgba(75, 107, 139, 0.05)" stroke-width="1" fill="none" fill-rule="evenodd"/></svg>');
     --mystery-pattern: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M15 22.5a7.5 7.5 0 0 0-7.5 7.5m30-7.5a7.5 7.5 0 0 0-7.5 7.5m-22.5 0a7.5 7.5 0 0 0 7.5 7.5m22.5-7.5a7.5 7.5 0 0 0-7.5 7.5" stroke="rgba(44, 52, 87, 0.05)" stroke-width="1.5" stroke-dasharray="1,3" fill="none" fill-rule="evenodd"/></svg>');
     --romance-pattern: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><path d="M30 15c-1.5 0-2.7 2.33-3 3.46-.3-1.12-1.5-3.45-3-3.45-1.96 0-3 1.56-3 3.5 0 1.95 3 4.5 6 7.5 3-3 6-5.55 6-7.5 0-1.94-1.04-3.5-3-3.5z" fill="rgba(179, 108, 129, 0.06)" fill-rule="evenodd"/><path d="M45 36c-1.5 0-2.7 2.33-3 3.46-.3-1.12-1.5-3.45-3-3.45-1.96 0-3 1.56-3 3.5 0 1.95 3 4.5 6 7.5 3-3 6-5.55 6-7.5 0-1.94-1.04-3.5-3-3.5z" fill="rgba(179, 108, 129, 0.06)" fill-rule="evenodd"/><path d="M18 39c-1.25 0-2.25 1.94-2.5 2.88-.25-.94-1.25-2.88-2.5-2.88-1.63 0-2.5 1.3-2.5 2.92 0 1.62 2.5 3.75 5 6.25 2.5-2.5 5-4.63 5-6.25 0-1.62-.87-2.92-2.5-2.92z" fill="rgba(179, 108, 129, 0.06)" fill-rule="evenodd"/></svg>');
+}
+
+/* Fantasy references background overlay */
+body:before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    background-image: url('/static/images/fantasy-elements.png');
+    background-size: 500px;
+    background-position: left bottom;
+    background-repeat: no-repeat;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+/* Game references background overlay */
+body:after {
+    content: "";
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    background-image: url('/static/images/game-elements.png');
+    background-size: 350px;
+    background-position: right top;
+    background-repeat: no-repeat;
+    opacity: 0.25;
+    pointer-events: none;
+}
+
+/* Hide background images on reader pages */
+body.reader-page:before,
+body.reader-page:after {
+    display: none;
 }
 
 body {
@@ -28,11 +81,22 @@ body {
     font-family: 'Crimson Text', Georgia, serif;
     font-size: 1.05rem;
     line-height: 1.6;
+    /* Fix scrolling perspective */
+    perspective: none;
+    -webkit-perspective: none;
 }
 
 /* Special page backgrounds */
 body.fantasy-theme {
     background-image: var(--fantasy-pattern);
+}
+
+body.fantasy-dark-theme {
+    background-color: var(--dark-bg-color);
+    background-image: var(--dark-fantasy-pattern);
+    color: var(--dark-text-color);
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 body.sci-fi-theme {
@@ -45,6 +109,23 @@ body.mystery-theme {
 
 body.romance-theme {
     background-image: var(--romance-pattern);
+}
+
+body.fantasy-dark-theme h1, 
+body.fantasy-dark-theme h2, 
+body.fantasy-dark-theme h3, 
+body.fantasy-dark-theme h4, 
+body.fantasy-dark-theme h5, 
+body.fantasy-dark-theme h6 {
+    color: var(--dark-heading-color);
+}
+
+body.fantasy-dark-theme a {
+    color: #b58c3f;
+}
+
+body.fantasy-dark-theme a:hover {
+    color: #d6a849;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -62,7 +143,7 @@ a:hover {
 }
 
 .container {
-    background-color: rgba(255, 250, 240, 0.92);
+    background-color: rgba(255, 250, 240, 0.85); /* Reduced opacity to show background */
     border-radius: 8px;
     box-shadow: var(--box-shadow);
     padding: 20px 30px;
@@ -70,6 +151,7 @@ a:hover {
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(3px); /* Add blur effect for better readability */
 }
 
 /* Fantasy decorative elements */
@@ -211,18 +293,51 @@ a:hover {
     background-color: #fffcf5;
     border: 1px solid var(--lighter-accent);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    /* Enhanced dropdown visibility fixes */
+    z-index: 1050; /* Increased z-index to ensure it's above other elements */
+    max-height: 80vh;
+    overflow-y: auto;
+    position: absolute; /* Ensure proper positioning */
 }
 
+/* Specifically target the user profile dropdown to ensure it's visible */
+.navbar-nav .dropdown-menu {
+    right: 0;
+    left: auto;
+    margin-top: 0.5rem;
+    min-width: 200px; /* Ensure minimum width for readability */
+}
+
+/* Fix for dropdown items to ensure they're properly visible */
 .dropdown-item {
-    font-weight: 500;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    clear: both;
 }
 
-.dropdown-item:hover {
-    background-color: #f3ece0;
+/* Ensure dropdown-menu-end works properly */
+.dropdown-menu-end {
+    right: 0 !important;
+    left: auto !important;
 }
 
-.dropdown-divider {
-    border-top-color: var(--lighter-accent);
+body.fantasy-dark-theme .dropdown-menu {
+    background-color: var(--dark-content-bg);
+    border-color: var(--dark-lighter-accent);
+    color: var(--dark-text-color);
+}
+
+body.fantasy-dark-theme .dropdown-item {
+    color: var(--dark-text-color);
+}
+
+body.fantasy-dark-theme .dropdown-item:hover {
+    background-color: var(--dark-primary-hover);
+    color: #fff;
+}
+
+body.fantasy-dark-theme .dropdown-divider {
+    border-top-color: var(--dark-lighter-accent);
 }
 
 /* Card styling */
@@ -596,367 +711,84 @@ footer .social-links a {
     background-size: cover;
 }
 
-/* Theme: Sci-Fi */
-.scifi-theme {
-    --primary-color: #1a2634;
-    --secondary-color: #0984e3;
-    --accent-color: #00cec9;
-    --text-color: #dfe6e9;
-    background-image: url('/static/images/scifi-bg.jpg');
+/* Theme: Fantasy Dark */
+.fantasy-dark-theme {
+    --primary-color: #1c1208;
+    --secondary-color: #6a3e8f;
+    --accent-color: #c49b15;
+    --text-color: #e0d3c7;
+    --light-color: #e0d3c7;
+    background-image: url('/static/images/fantasy-dark-bg.jpg');
     background-attachment: fixed;
     background-size: cover;
 }
 
-/* Theme: Mystery */
-.mystery-theme {
-    --primary-color: #2d3436;
-    --secondary-color: #6c5ce7;
-    --accent-color: #fd79a8;
-    --text-color: #b2bec3;
-    background-image: url('/static/images/mystery-bg.jpg');
-    background-attachment: fixed;
-    background-size: cover;
+.fantasy-dark-theme .container {
+    background-color: rgba(36, 27, 21, 0.92);
+    border: 1px solid var(--dark-lighter-accent);
+    box-shadow: var(--dark-box-shadow);
 }
 
-/* Theme: History */
-.history-theme {
-    --primary-color: #7d5a50;
-    --secondary-color: #b4846c;
-    --accent-color: #e5b299;
-    --text-color: #392f2a;
-    background-image: url('/static/images/history-bg.jpg');
-    background-attachment: fixed;
-    background-size: cover;
+.fantasy-dark-theme .card {
+    background-color: rgba(36, 27, 21, 0.95);
+    border-color: var(--dark-lighter-accent);
 }
 
-body {
-    font-family: var(--font-main);
-    color: var(--text-color);
-    line-height: 1.6;
-    position: relative;
-    min-height: 100vh;
+.fantasy-dark-theme .card-header {
+    background-color: var(--dark-primary);
 }
 
-h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-fancy);
-    margin-bottom: 1rem;
+.fantasy-dark-theme .navbar {
+    background-color: var(--dark-primary) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
-.navbar {
-    background-color: var(--primary-color);
-    box-shadow: var(--box-shadow);
-    border-bottom: 3px solid var(--accent-color);
+.fantasy-dark-theme footer {
+    background-color: var(--dark-primary) !important;
+    color: var(--dark-text-color);
 }
 
-.navbar-brand {
-    font-family: var(--font-fancy);
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--light-color) !important;
+.fantasy-dark-theme .btn-primary {
+    background-color: #5e3b21;
+    border-color: #7a4d2b;
 }
 
-.navbar-nav .nav-link {
-    color: var(--light-color);
-    transition: var(--transition);
-    position: relative;
+.fantasy-dark-theme .btn-primary:hover {
+    background-color: #7a4d2b;
 }
 
-.navbar-nav .nav-link:hover {
-    color: var(--accent-color);
+.fantasy-dark-theme .card-header.bg-primary {
+    background-color: #5e3b21 !important;
 }
 
-.navbar-nav .nav-link.active {
-    color: var(--accent-color);
-    font-weight: bold;
+.fantasy-dark-theme .form-control {
+    background-color: rgba(36, 27, 21, 0.9);
+    border-color: var(--dark-lighter-accent);
+    color: var(--dark-text-color);
 }
 
-/* Fantasy-themed navigation with scroll effect */
-.navbar-nav .nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: var(--accent-color);
-    transform: scaleX(1);
+.fantasy-dark-theme .form-control:focus {
+    background-color: rgba(36, 27, 21, 1);
+    border-color: #7a4d2b;
+    box-shadow: 0 0 0 0.25rem rgba(122, 77, 43, 0.25);
+    color: var(--dark-text-color);
 }
 
-.navbar-nav .nav-link::after {
-    content: '';
-    position: absolute;
-    bottom: -3px;
-    left: 0;
-    width: 100%;
-    height: 3px;
-    background-color: var(--accent-color);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
+/* Prevent parallax scrolling effect */
+html {
+    height: auto;
+    overflow-y: auto;
 }
 
-.navbar-nav .nav-link:hover::after {
-    transform: scaleX(1);
+/* Fix scrolling behavior */
+html, body {
+    scroll-behavior: smooth;
+    perspective: none;
+    transform-style: flat;
 }
 
-/* Button styles */
-.btn {
-    border-radius: var(--border-radius);
-    transition: var(--transition);
-    box-shadow: var(--box-shadow);
-}
-
-.btn-primary {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-.btn-secondary {
-    background-color: var(--secondary-color);
-    border-color: var(--secondary-color);
-}
-
-.btn-success {
-    background-color: var(--success-color);
-    border-color: var(--success-color);
-}
-
-.btn-danger {
-    background-color: var(--danger-color);
-    border-color: var(--danger-color);
-}
-
-.btn-warning {
-    background-color: var(--warning-color);
-    border-color: var(--warning-color);
-}
-
-.btn-info {
-    background-color: var(--info-color);
-    border-color: var(--info-color);
-}
-
-/* Fantasy-themed buttons */
-.fantasy-theme .btn {
-    border-radius: 0;
-    position: relative;
-    z-index: 1;
-    overflow: hidden;
-}
-
-.fantasy-theme .btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, 0.2);
-    transition: var(--transition);
-    z-index: -1;
-}
-
-.fantasy-theme .btn:hover::before {
-    left: 0;
-}
-
-/* Card styles */
-.card {
-    background-color: rgba(255, 255, 255, 0.85);
-    border-radius: var(--border-radius);
-    box-shadow: var(--box-shadow);
-    transition: var(--transition);
-    overflow: hidden;
-    margin-bottom: 1.5rem;
-}
-
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-.card-title {
-    font-family: var(--font-fancy);
-    color: var(--primary-color);
-}
-
-/* Book Cards */
-.book-card {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-.book-cover {
-    height: 250px;
-    object-fit: cover;
-    transition: var(--transition);
-}
-
-.book-hover {
-    transform: scale(1.05);
-}
-
-.fantasy-book .card {
-    border-left: 4px solid #8e44ad;
-}
-
-.scifi-book .card {
-    border-left: 4px solid #0984e3;
-}
-
-.mystery-book .card {
-    border-left: 4px solid #6c5ce7;
-}
-
-.history-book .card {
-    border-left: 4px solid #b4846c;
-}
-
-/* Pagination */
-.pagination .page-link {
-    color: var(--primary-color);
-    border-color: var(--light-color);
-}
-
-.pagination .page-item.active .page-link {
-    background-color: var(--primary-color);
-    border-color: var(--primary-color);
-}
-
-/* Footer */
-footer {
-    background-color: var(--primary-color);
-    color: var(--light-color);
-    padding: 2rem 0;
-    margin-top: auto;
-}
-
-footer a {
-    color: var(--light-color);
-    transition: var(--transition);
-}
-
-footer a:hover {
-    color: var(--accent-color);
-    text-decoration: none;
-}
-
-.social-icons a {
-    margin-right: 1rem;
-}
-
-/* Forms */
-.form-control {
-    border-radius: var(--border-radius);
-    border-color: var(--secondary-color);
-}
-
-.form-control:focus {
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 0.2rem rgba(58, 39, 24, 0.25);
-}
-
-.search-form {
-    position: relative;
-    max-width: 300px;
-}
-
-.search-form input {
-    padding-right: 40px;
-    background-color: rgba(255, 255, 255, 0.85);
-    transition: var(--transition);
-}
-
-.search-form .btn {
-    position: absolute;
-    right: 0;
-    top: 0;
-    height: 100%;
-}
-
-.search-focus input {
-    width: 100%;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-/* PDF Viewer */
-.pdf-container {
-    width: 100%;
-    height: 80vh;
-    margin: 20px 0;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.fantasy-theme .pdf-container {
-    border: 8px double var(--secondary-color);
-    box-shadow: 0 0 15px rgba(142, 68, 173, 0.4);
-}
-
-/* User profile */
-.profile-image {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    margin-right: 8px;
-}
-
-.profile-page .profile-image {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--accent-color);
-}
-
-/* Loading spinner */
-.spinner-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.spinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid var(--accent-color);
-    border-left-color: transparent;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Responsive styles */
-@media (max-width: 768px) {
-    .book-cover {
-        height: 200px;
-    }
-    
-    .pdf-container {
-        height: 60vh;
-    }
-}
-
-@media (max-width: 576px) {
-    .book-cover {
-        height: 180px;
-    }
-    
-    .pdf-container {
-        height: 50vh;
+@media (prefers-reduced-motion: reduce) {
+    html, body {
+        scroll-behavior: auto;
     }
 } 
