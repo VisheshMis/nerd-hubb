@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Reading {{ book_file.original_filename }}{% endblock %}
+
+{% block body_class %}reader-page{% endblock %}
+
+{% block styles %}
+{{ super() }}
+<style>
+    body {
+        background-color: #f8f3e6;
+        background-image: url('/static/images/fantasy-bg.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: #3a2921;
+    }
+    
+    .container {
+        background-color: rgba(255, 250, 240, 0.92);
+        border-radius: 8px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        padding: 20px 30px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Libre Baskerville', Georgia, serif;
+        color: #5c3c25;
+    }
+    
+    #text-container {
+        width: 100%;
+        max-height: 85vh;
+        margin: 0 auto;
+        padding: 30px;
+        border: 1px solid #d9c9a3;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        background-color: #fff;
+        border-radius: 5px;
+        overflow-y: auto;
+        line-height: 1.6;
+        font-family: 'Crimson Text', Georgia, serif;
+        white-space: pre-wrap;
+    }
+    
+    .btn-outline-primary {
+        border-color: #7c5e42;
+        color: #7c5e42;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #7c5e42;
+        color: #fff;
+        border-color: #7c5e42;
+    }
+    
+    .btn-outline-secondary {
+        border-color: #5e7c42;
+        color: #5e7c42;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #5e7c42;
+        color: #fff;
+        border-color: #5e7c42;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3">{{ book_file.original_filename }}</h1>
+        <div>
+            <a href="{{ url_for('users.download_file', file_id=book_file.id) }}" class="btn btn-outline-primary">
+                <i class="fas fa-download"></i> Download
+            </a>
+            <a href="{{ url_for('users.files', username=book_file.user.username) }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Files
+            </a>
+        </div>
+    </div>
+
+    {% if book_file.book %}
+    <div class="mb-4">
+        <p>From book: <a href="{{ url_for('books.detail', book_id=book_file.book.id) }}">{{ book_file.book.title }}</a></p>
+    </div>
+    {% endif %}
+
+    <div id="text-container">{{ content }}</div>
+</div>
+{% endblock %} 

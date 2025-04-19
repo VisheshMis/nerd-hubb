@@ -1,45 +1,315 @@
 {% extends "base.html" %}
 
-{% block title %}Reading {{ book_file.original_filename }}{% endblock %}
+{% block title %}Reading: {{ book_file.original_filename }}{% endblock %}
+
+{% block body_class %}reader-page{% endblock %}
 
 {% block styles %}
 {{ super() }}
 <style>
-    #pdf-container {
+    body {
+        background-color: #f8f3e6;
+        background-image: url('/static/images/fantasy-bg.jpg');
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: #3a2921;
+    }
+    
+    .container {
+        background-color: rgba(255, 250, 240, 0.92);
+        border-radius: 8px;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+        padding: 20px 30px;
+        margin-top: 20px;
+        margin-bottom: 40px;
+    }
+    
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Libre Baskerville', Georgia, serif;
+        color: #5c3c25;
+    }
+    
+    .pdf-container {
         width: 100%;
         height: 85vh;
         margin: 0 auto;
-        border: 1px solid #ccc;
+        border: 1px solid #d9c9a3;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+        background-color: #fff;
+        border-radius: 5px;
+        overflow: auto;
+        position: relative;
+    }
+    
+    #pdf-viewer {
+        margin: 0 auto;
+        display: block;
+    }
+    
+    .pdf-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 10px;
+        background-color: rgba(255, 250, 240, 0.95);
+        border-bottom: 1px solid #d9c9a3;
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+    
+    .pdf-controls button {
+        margin: 0 5px;
+        padding: 5px 15px;
+        background-color: #7c5e42;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-family: 'Libre Baskerville', Georgia, serif;
+        transition: all 0.2s ease;
+    }
+    
+    .pdf-controls button:hover {
+        background-color: #5c3c25;
+    }
+    
+    .pdf-controls .page-info {
+        margin: 0 15px;
+        font-family: 'Libre Baskerville', Georgia, serif;
+        color: #5c3c25;
+    }
+    
+    .btn-outline-primary {
+        border-color: #7c5e42;
+        color: #7c5e42;
+    }
+    
+    .btn-outline-primary:hover {
+        background-color: #7c5e42;
+        color: #fff;
+        border-color: #7c5e42;
+    }
+    
+    .btn-outline-secondary {
+        border-color: #5e7c42;
+        color: #5e7c42;
+    }
+    
+    .btn-outline-secondary:hover {
+        background-color: #5e7c42;
+        color: #fff;
+        border-color: #5e7c42;
+    }
+    
+    .actions-bar {
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+    }
+    
+    .back-to-files {
+        display: inline-block;
+    }
+    
+    body.reader-page .container {
+        max-width: 95%;
+        padding-top: 10px;
+    }
+    
+    .loading {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+    }
+    
+    .loading i {
+        color: #7c5e42;
+        font-size: 3rem;
+        animation: spin 2s linear infinite;
+    }
+    
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    
+    #error-message {
+        display: none;
+        color: #c93030;
+        text-align: center;
+        padding: 20px;
     }
 </style>
 {% endblock %}
 
+{% block scripts %}
+{{ super() }}
+<script src="/static/js/pdfjs/pdf.min.js"></script>
+<script>
+    // Specify the worker source
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/static/js/pdfjs/pdf.worker.min.js';
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        const url = '{{ url_for("users.stream_file", file_id=book_file.id) }}';
+        const container = document.getElementById('pdf-container');
+        const canvas = document.getElementById('pdf-viewer');
+        const ctx = canvas.getContext('2d');
+        const loading = document.getElementById('loading');
+        const errorMessage = document.getElementById('error-message');
+        const pageNumSpan = document.getElementById('page-num');
+        const pageTotalSpan = document.getElementById('page-total');
+        const prevButton = document.getElementById('prev');
+        const nextButton = document.getElementById('next');
+        const zoomInButton = document.getElementById('zoom-in');
+        const zoomOutButton = document.getElementById('zoom-out');
+        
+        let pdfDoc = null;
+        let pageNum = 1;
+        let pageRendering = false;
+        let pageNumPending = null;
+        let scale = 1.0;
+        
+        // Initialize with loading state
+        loading.style.display = 'block';
+        
+        function renderPage(num) {
+            pageRendering = true;
+            
+            // Update page counters
+            pageNumSpan.textContent = num;
+            
+            // Get page
+            pdfDoc.getPage(num).then(function(page) {
+                // Calculate scale to fit the container width
+                const viewport = page.getViewport({ scale: scale });
+                
+                // Set canvas height and width to the viewport dimensions
+                canvas.height = viewport.height;
+                canvas.width = viewport.width;
+                
+                // Render PDF page
+                const renderContext = {
+                    canvasContext: ctx,
+                    viewport: viewport
+                };
+                
+                page.render(renderContext).promise.then(function() {
+                    pageRendering = false;
+                    
+                    if (pageNumPending !== null) {
+                        // New page rendering is pending
+                        renderPage(pageNumPending);
+                        pageNumPending = null;
+                    }
+                    
+                    loading.style.display = 'none';
+                });
+            }).catch(function(error) {
+                console.error('Error rendering page:', error);
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Error rendering page: ' + error.message;
+                loading.style.display = 'none';
+            });
+        }
+        
+        function queueRenderPage(num) {
+            if (pageRendering) {
+                pageNumPending = num;
+            } else {
+                renderPage(num);
+            }
+        }
+        
+        function onPrevPage() {
+            if (pageNum <= 1) {
+                return;
+            }
+            pageNum--;
+            queueRenderPage(pageNum);
+        }
+        
+        function onNextPage() {
+            if (pageNum >= pdfDoc.numPages) {
+                return;
+            }
+            pageNum++;
+            queueRenderPage(pageNum);
+        }
+        
+        function zoomIn() {
+            scale += 0.25;
+            queueRenderPage(pageNum);
+        }
+        
+        function zoomOut() {
+            if (scale <= 0.5) return;
+            scale -= 0.25;
+            queueRenderPage(pageNum);
+        }
+        
+        // Load the PDF
+        pdfjsLib.getDocument(url).promise.then(function(pdf) {
+            pdfDoc = pdf;
+            pageTotalSpan.textContent = pdf.numPages;
+            
+            // Initial render
+            renderPage(pageNum);
+            
+            // Enable buttons
+            prevButton.disabled = false;
+            nextButton.disabled = false;
+            zoomInButton.disabled = false;
+            zoomOutButton.disabled = false;
+        }).catch(function(error) {
+            console.error('Error loading PDF:', error);
+            errorMessage.style.display = 'block';
+            errorMessage.textContent = 'Error loading PDF: ' + error.message;
+            loading.style.display = 'none';
+        });
+        
+        // Button event listeners
+        prevButton.addEventListener('click', onPrevPage);
+        nextButton.addEventListener('click', onNextPage);
+        zoomInButton.addEventListener('click', zoomIn);
+        zoomOutButton.addEventListener('click', zoomOut);
+    });
+</script>
+{% endblock %}
+
 {% block content %}
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h1 class="h3">{{ book_file.original_filename }}</h1>
-        <div>
-            <a href="{{ url_for('users.download_file', file_id=book_file.id) }}" class="btn btn-outline-primary">
-                <i class="fas fa-download"></i> Download
-            </a>
-            <a href="{{ url_for('users.files', username=book_file.user.username) }}" class="btn btn-outline-secondary">
-                <i class="fas fa-arrow-left"></i> Back to Files
-            </a>
-        </div>
-    </div>
-
-    {% if book_file.book %}
-    <div class="mb-4">
-        <p>From book: <a href="{{ url_for('books.detail', book_id=book_file.book.id) }}">{{ book_file.book.title }}</a></p>
-    </div>
-    {% endif %}
-
-    <div id="pdf-container">
-        <object data="{{ url_for('users.stream_file', file_id=book_file.id) }}" type="application/pdf" width="100%" height="100%">
-            <p>Your browser doesn't support embedded PDFs. 
-               <a href="{{ url_for('users.download_file', file_id=book_file.id) }}">Download the PDF</a> instead.
-            </p>
-        </object>
-    </div>
+<div class="actions-bar">
+    <a href="{{ url_for('users.files', username=current_user.username) }}" class="btn btn-outline-secondary back-to-files">
+        <i class="fas fa-arrow-left"></i> Back to Files
+    </a>
+    <a href="{{ url_for('users.download_file', file_id=book_file.id) }}" class="btn btn-primary">
+        <i class="fas fa-download"></i> Download
+    </a>
 </div>
-{% endblock %} 
+
+<div id="pdf-container" class="pdf-container">
+    <div class="pdf-controls">
+        <button id="prev" disabled>Previous</button>
+        <span class="page-info">
+            Page <span id="page-num">1</span> of <span id="page-total">-</span>
+        </span>
+        <button id="next" disabled>Next</button>
+        <span style="margin: 0 15px;">|</span>
+        <button id="zoom-out" disabled><i class="fas fa-search-minus"></i></button>
+        <button id="zoom-in" disabled><i class="fas fa-search-plus"></i></button>
+    </div>
+    
+    <div id="loading" class="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Loading PDF...</p>
+    </div>
+    
+    <div id="error-message"></div>
+    
+    <canvas id="pdf-viewer"></canvas>
+</div>
+{% endblock %}
